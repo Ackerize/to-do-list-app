@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useReducer } from "react";
+import { AuthContext } from "./auth/AuthContext";
+import { AppRouter } from "./routers/AppRouter";
+import { authReducer } from "./auth/authReducer";
+import './screens/main.css';
+
+const init = () => {
+  return JSON.parse(localStorage.getItem("userTodo")) || {logged: false}
+}
 
 function App() {
+  const [user, dispatch] = useReducer(authReducer, {}, init);
+
+  useEffect(() => {
+    localStorage.setItem("userTodo", JSON.stringify(user));
+  }, [user])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{ user, dispatch }}>
+      <AppRouter />
+    </AuthContext.Provider>
   );
 }
 

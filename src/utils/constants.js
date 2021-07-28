@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const API_URL = 'http://localhost:3001';
+export const API_URL = 'https://todo-api-app-2021.herokuapp.com';
 
 export const formatDate = (date) => moment(date).format('YYYY-MM-DD')
 

@@ -534,6 +534,8 @@ h6 {
 }
 #container-btn{
   margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .btn--green:hover {
@@ -555,6 +557,14 @@ h6 {
 .btn--red:hover {
   background: #eb3746;
   color: #fff !important;
+}
+
+.eye-icon{
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  margin-right: 0.5rem;
 }
 
 

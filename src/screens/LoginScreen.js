@@ -7,6 +7,7 @@ import { API_URL } from "../utils/constants";
 import { useHistory } from "react-router";
 import { AuthContext } from "../auth/AuthContext";
 import { types } from "../types/types";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export const LoginScreen = () => {
   const [formValues, handleInputChange] = useForm({
@@ -21,7 +22,9 @@ export const LoginScreen = () => {
     password: null,
   });
 
-  const { dispatch } = useContext(AuthContext)
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { dispatch } = useContext(AuthContext);
 
   useEffect(() => {
     const { username, password } = formValues;
@@ -34,8 +37,8 @@ export const LoginScreen = () => {
   }, [formValues]);
 
   const onChangeView = () => {
-    history.push("/register")
-  }
+    history.push("/register");
+  };
 
   const validarForm = () => {
     const { username, password } = formValues;
@@ -58,7 +61,7 @@ export const LoginScreen = () => {
     if (validarForm()) {
       axios
         .post(`${API_URL}/login`, formValues)
-        .then(({data}) => {
+        .then(({ data }) => {
           Swal.fire({
             icon: "success",
             title: "Bienvenido!",
@@ -66,14 +69,14 @@ export const LoginScreen = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          setTimeout(() => { 
-            history.push("/")
+          setTimeout(() => {
+            history.push("/");
             dispatch({
               type: types.login,
               payload: {
                 id: `${data.id}`,
-                name: `${data.username}`
-              }
+                name: `${data.username}`,
+              },
             });
           }, 500);
         })
@@ -120,6 +123,7 @@ export const LoginScreen = () => {
                         name="username"
                         onChange={handleInputChange}
                         value={formValues.username}
+                        autoComplete="off"
                       />
                       {errors.username && (
                         <p className="error">Ingrese el usuario</p>
@@ -133,15 +137,29 @@ export const LoginScreen = () => {
                     <div className="input-group">
                       <input
                         className="input--style-5"
-                        type="password"
+                        type={ showPassword ? "text" : "password" }
                         name="password"
                         onChange={handleInputChange}
                         value={formValues.password}
+                        autoComplete="off"
                       />
-                      {errors.password && (
-                        <p className="error">Ingrese su contraseña</p>
+                      {showPassword ? (
+                        <AiFillEye
+                          className="eye-icon"
+                          size={25}
+                          onClick={() => setShowPassword((e) => !e)}
+                        />
+                      ) : (
+                        <AiFillEyeInvisible
+                          className="eye-icon"
+                          size={25}
+                          onClick={() => setShowPassword((e) => !e)}
+                        />
                       )}
                     </div>
+                    {errors.password && (
+                      <p className="error">Ingrese su contraseña</p>
+                    )}
                   </div>
                 </div>
 

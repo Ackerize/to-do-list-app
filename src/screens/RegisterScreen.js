@@ -1,10 +1,11 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "../hooks/useForm";
 import Swal from "sweetalert2";
 import { API_URL } from "../utils/constants";
 import { useHistory } from "react-router";
 import validator from "validator";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export const RegisterScreen = () => {
   const [formValues, handleInputChange] = useForm({
@@ -12,6 +13,9 @@ export const RegisterScreen = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const history = useHistory();
 
@@ -40,7 +44,13 @@ export const RegisterScreen = () => {
         })
         .catch(({ response }) => {
           const { status } = response;
-          if (status === 500) {
+          if (status === 404) {
+            Swal.fire({
+              icon: "warning",
+              title: "Oops!",
+              text: "El usuario ya está registrado.",
+            });
+          } else if (status === 500) {
             Swal.fire({
               icon: "error",
               title: "Oops!",
@@ -89,6 +99,7 @@ export const RegisterScreen = () => {
                         name="username"
                         onChange={handleInputChange}
                         value={formValues.username}
+                        autoComplete="off"
                       />
                     </div>
                   </div>
@@ -99,11 +110,25 @@ export const RegisterScreen = () => {
                     <div className="input-group">
                       <input
                         className="input--style-5"
-                        type="password"
+                        type={ showPassword ? "text" : "password" }
                         name="password"
                         onChange={handleInputChange}
                         value={formValues.password}
+                        autoComplete="off"
                       />
+                      {showPassword ? (
+                        <AiFillEye
+                          className="eye-icon"
+                          size={25}
+                          onClick={() => setShowPassword((e) => !e)}
+                        />
+                      ) : (
+                        <AiFillEyeInvisible
+                          className="eye-icon"
+                          size={25}
+                          onClick={() => setShowPassword((e) => !e)}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -113,11 +138,25 @@ export const RegisterScreen = () => {
                     <div className="input-group">
                       <input
                         className="input--style-5"
-                        type="password"
+                        type={ showConfirm ? "text" : "password" }
                         name="confirmPassword"
                         onChange={handleInputChange}
                         value={formValues.confirmPassword}
+                        autoComplete="off"
                       />
+                      {showConfirm ? (
+                        <AiFillEye
+                          className="eye-icon"
+                          size={25}
+                          onClick={() => setShowConfirm((e) => !e)}
+                        />
+                      ) : (
+                        <AiFillEyeInvisible
+                          className="eye-icon"
+                          size={25}
+                          onClick={() => setShowConfirm((e) => !e)}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

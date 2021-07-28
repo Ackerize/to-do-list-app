@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import TimePicker from "react-gradient-timepicker";
+import TimePicker from "../components/timepicker/index";
 import { enGB } from "date-fns/locale";
 import { DatePicker } from "react-nice-dates";
 import "react-nice-dates/build/style.css";
@@ -11,6 +11,7 @@ import { useForm } from "../hooks/useForm";
 import { AuthContext } from "../auth/AuthContext";
 import { API_URL, formatDate, formatTime } from "../utils/constants";
 import { useParams } from "react-router-dom";
+import validator from "validator";
 
 const TaskScreen = () => {
   const {
@@ -23,7 +24,9 @@ const TaskScreen = () => {
   const [task, setTask] = useState(null);
   const [time, setTime] = useState(null);
   const [date, setDate] = useState(new Date(actualDate));
-
+  const [errors, setErrors] = useState({
+    title: null,
+  });
   const [values, handleInputChange, , updateState] = useForm({
     content: "",
     dueDate: "",
@@ -44,6 +47,13 @@ const TaskScreen = () => {
       setTime(dueTime);
     });
   }, []);
+
+  useEffect(() => {
+    const { content } = values;
+    if (!validator.isEmpty(content) && errors.title) {
+      setErrors((e) => ({ title: null }));
+    }
+  }, [values]);
 
   const history = useHistory();
 
@@ -79,6 +89,14 @@ const TaskScreen = () => {
     });
   };
 
+  const onValidForm = () => {
+    const { content } = values;
+    if (validator.isEmpty(content)) {
+      setErrors((e) => ({ title: true }));
+      return false;
+    } else return true;
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     const timeAux = time.split(":");
@@ -89,51 +107,50 @@ const TaskScreen = () => {
       now.getDate(),
       ...timeAux
     );
-    console.log(dueTime);
     const data = {
       ...values,
       dueDate: formatDate(date),
       dueTime: formatTime(dueTime),
     };
-    console.log(data.dueTime);
-    if (task) {
-      axios
-        .put(`${API_URL}/todos/${idTask}`, data)
-        .then(({ data }) => {
-          Swal.fire({
-            icon: "success",
-            title: "¡Tarea actualizada!",
-            text: "La tarea ha sido actualizada con éxito",
-            showConfirmButton: false,
-            timer: 1400,
+    if (onValidForm()) {
+      if (task) {
+        axios
+          .put(`${API_URL}/todos/${idTask}`, data)
+          .then(({ data }) => {
+            Swal.fire({
+              icon: "success",
+              title: "¡Tarea actualizada!",
+              text: "La tarea ha sido actualizada con éxito",
+              showConfirmButton: false,
+              timer: 1400,
+            });
+            setTimeout(() => {
+              history.push("/home");
+            }, 1400);
+          })
+          .catch(({ response }) => {
+            console.log(response);
           });
-          setTimeout(() => {
-            history.push("/home");
-          }, 1400);
-        })
-        .catch(({ response }) => {
-          console.log(response);
-        });
-    } else {
-      axios
-        .post(`${API_URL}/todos/new`, data)
-        .then(({ data }) => {
-          Swal.fire({
-            icon: "success",
-            title: "¡Tarea creada!",
-            text: "La tarea ha sido creada con éxito",
-            showConfirmButton: false,
-            timer: 1400,
+      } else {
+        axios
+          .post(`${API_URL}/todos/new`, data)
+          .then(({ data }) => {
+            Swal.fire({
+              icon: "success",
+              title: "¡Tarea creada!",
+              text: "La tarea ha sido creada con éxito",
+              showConfirmButton: false,
+              timer: 1400,
+            });
+            setTimeout(() => {
+              history.push("/home");
+            }, 1400);
+          })
+          .catch(({ response }) => {
+            console.log(response);
           });
-          setTimeout(() => {
-            history.push("/home");
-          }, 1400);
-        })
-        .catch(({ response }) => {
-          console.log(response);
-        });
+      }
     }
-    console.log(data);
   };
 
   return (
@@ -155,7 +172,7 @@ const TaskScreen = () => {
             <div className="card-body card-body-painting">
               <form onSubmit={onSubmit}>
                 <div className="form-row">
-                  <div className="name label-text">Titulo: </div>
+                  <div className="name label-text">Título: </div>
                   <div className="value">
                     <div className="input-group">
                       <input
@@ -165,6 +182,9 @@ const TaskScreen = () => {
                         value={values.content}
                         onChange={handleInputChange}
                       />
+                      {errors.title && (
+                        <p className="error">Ingrese el título</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -195,12 +215,11 @@ const TaskScreen = () => {
                     <div className="input-group">
                       <TimePicker
                         time={time}
-                        theme="Bourbon"
+                        color1="#00bcd4"
                         className="input-date-picker input-time"
                         placeholder="HH:MM"
                         onSet={(val) => {
                           setTime(val.format24);
-                          console.log(val.format24);
                         }}
                       />
                     </div>

@@ -359,7 +359,7 @@ h6 {
 
 .container-dates {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .container-dates > svg {
@@ -367,8 +367,6 @@ h6 {
   height: 2rem;
   color: white;
   margin-top: 0rem;
-  margin-left: 4rem;
-  margin-right: 4rem;
 }
 
 .p-t-180 {
@@ -532,7 +530,7 @@ h6 {
   justify-content: center;
   margin-top: 1.5rem;
 }
-#container-btn{
+#container-btn {
   margin-top: 1.5rem;
   display: flex;
   justify-content: center;
@@ -559,14 +557,13 @@ h6 {
   color: #fff !important;
 }
 
-.eye-icon{
+.eye-icon {
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   margin-right: 0.5rem;
 }
-
 
 /* ==========================================================================
      #DATE PICKER
@@ -927,10 +924,73 @@ hr.hr-order-details {
   width: fit-content;
 }
 
-@media (max-width: 767px) {
-  .card-5 .card-body {
-    padding: 40px 30px;
-    padding-bottom: 50px;
+@media (min-width: 426px) and (max-width: 768px) {
+  div.wrapper {
+    padding: 0 2rem;
+  }
+
+  .card-5 div.card-body {
+    padding: 52px 70px !important;
+  }
+
+  .container-dates > svg {
+    overflow: initial;
+  }
+}
+
+@media (max-width: 425px) {
+  div.wrapper {
+    padding: 0 2rem;
+  }
+
+  .card-5 div.card-body {
+    padding: 52px 50px !important;
+  }
+
+  .btn {
+    padding: 0 20px;
+  }
+
+  #todo-container {
+    padding: 45px 15px !important;
+  }
+
+  .list-labels {
+    font-size: 1rem;
+  }
+
+  .done-task-title {
+    padding: 0 10px 0 0;
+  }
+
+  .input-date {
+    width: 60%;
+  }
+
+  .input-date-picker {
+    width: 62% !important;
+  }
+  .title {
+    font-size: 22px;
+}
+}
+
+@media (min-width: 321px) and (max-width: 375px) {
+  .card-5 div.card-body {
+    padding: 45px 40px !important;
+  }
+}
+
+@media (max-width: 320px) {
+  div.wrapper {
+    padding: 0 1.5rem;
+  }
+  .btn {
+    padding: 0 12px;
+  }
+
+  .card-5 div.card-body {
+    padding: 45px 30px !important;
   }
 }
 
@@ -1044,8 +1104,10 @@ hr.hr-order-details {
   }
 }
 
-.wrapper-home {
-  width: 600px !important;
+@media (min-width: 768px) {
+  .wrapper-home {
+    width: 600px !important;
+  }
 }
 
 .btn-add-todo {
@@ -1063,7 +1125,6 @@ hr.hr-order-details {
 .dialog-container {
   height: 600px !important;
 }
-
 
 .input--style-5.input-dialog {
   padding-left: 1rem !important;
@@ -1099,10 +1160,10 @@ hr.hr-order-details {
 
 .picker-date-container {
   display: flex;
-  
 }
 
-.picker-date-container > h3,  .timer-container > h3{
+.picker-date-container > h3,
+.timer-container > h3 {
   margin-top: 0.6rem;
   font-size: 17px !important;
   text-transform: uppercase;
@@ -1133,46 +1194,46 @@ hr.hr-order-details {
   cursor: pointer;
 }
 
-.timer-container{
+.timer-container {
   display: flex;
 }
 
-.nice-dates-popover{
+.nice-dates-popover {
   z-index: 10000 !important;
 }
 
-.btn-groups{
+.btn-groups {
   display: flex;
-  justify-content:center;
+  justify-content: center;
 }
 
 .heading-task {
   display: flex;
 }
 
-.heading-task > svg{
+.heading-task > svg {
   width: 2rem;
   height: 2rem;
   margin-left: 1rem;
   cursor: pointer;
 }
 
-.back-btn{
+.back-btn {
   color: #fff;
 }
 
-.title-container{
+.title-container {
   width: 90%;
   text-align: center;
 }
 
 .done-task-title {
   text-decoration: line-through;
-  color: #898989
+  color: #898989;
 }
 
-.done-task-time{
-  color: #F26764;
+.done-task-time {
+  color: #f26764;
   font-weight: 500;
   text-decoration: line-through;
 }
@@ -1182,3 +1243,8 @@ hr.hr-order-details {
   font-size: 1.1em;
 }
 
+@media (max-width: 425px) {
+  .input-date-picker {
+    width: 62% !important;
+  }
+}

@@ -8,8 +8,6 @@ export const ListItem = ({id, title, time, status}) => {
 
   const [selected, setSelected] = useState(!status);
 
-  console.log({id, selected, status})
-
   const onSelect = () => {
     axios.put(`${API_URL}/todos/status/${id}`, { status: !status })
     .then(({data}) => setSelected(!selected))
